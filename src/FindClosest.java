@@ -6,10 +6,8 @@ public class FindClosest
     public static void main(String[] args)
     {
         Scanner scan = new Scanner(System.in);
-        System.out.println("starting");
 	// read number of points and make arrays
 	int numPoints = scan.nextInt();
-	System.out.println("numPoints = " + numPoints);
 	Point2D.Double[] points = new Point2D.Double[numPoints];
 	// read points and add to array
 	for (int p = 0; p < numPoints; p++)
