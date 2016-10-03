@@ -27,7 +27,10 @@ public class PointSet {
 		// problem.
 		Point2D.Double[] sortedByX = sortByX(points);
 		Point2D.Double[] sortedByY = sortByY(points);
+		long startTime = System.currentTimeMillis();
 		PointPair closestTestPair = closestpair(sortedByX, sortedByY);
+		long timeToFind = System.currentTimeMillis() - startTime;
+		System.out.println("Operation took " + timeToFind + " ms");
 		/*
 		 * The below code calls the validator to ensure the correct closest pair
 		 * has been found. However, doing so calls the bruteforce algorithm,
@@ -165,8 +168,13 @@ public class PointSet {
 
 		// My is now populated with points within d of the dividingLine.
 		// Reconsider points within this set to be potential closest pairs.
-		for (Point2D.Double p1 : My) {
-			for (Point2D.Double p2 : My) {
+
+		// 10/3/16: Changed to only consider points that occur below the current
+		// point. This insures that the search within My is not n^2 time.
+		for (int i = 0; i < My.size(); i++) {
+			Point2D.Double p1 = My.get(i);
+			for (int j = i; j < My.size(); j++) {
+				Point2D.Double p2 = My.get(j);
 				if (p1 == p2) {
 					continue;
 				}
@@ -198,7 +206,7 @@ public class PointSet {
 	 * @param start
 	 *            Beginning index to consider.
 	 * @param end
-	 *            Last idnex to consider (non-inclusive).
+	 *            Last index to consider (non-inclusive).
 	 * @return PointPair object containing the closest pair.
 	 */
 	private static PointPair bruteforce(Point2D.Double[] pointList, int start,
@@ -279,8 +287,10 @@ public class PointSet {
 	 * Used by sortByX where it takes two sorted arrays and merges them into one
 	 * sorted array.
 	 * 
-	 * @param left One array of points sorted by x-coordinate.
-	 * @param right Another array of points sorted by x-coordinate.
+	 * @param left
+	 *            One array of points sorted by x-coordinate.
+	 * @param right
+	 *            Another array of points sorted by x-coordinate.
 	 * @return A single array of all points sorted by x-coordinate.
 	 */
 	private static Point2D.Double[] mergeByX(Point2D.Double[] left,
@@ -303,7 +313,7 @@ public class PointSet {
 		}
 		return toReturn;
 	}
-	
+
 	/**
 	 * Identical to mergeByX except it merges by y-coordinate
 	 */
